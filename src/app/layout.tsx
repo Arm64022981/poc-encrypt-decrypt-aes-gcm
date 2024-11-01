@@ -14,7 +14,7 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 {/* Render Header only if not on login page */}
-                {pathname !== '/co-pay-back-office' && <Header />}
+                {pathname !== '/encrypt-decrypt' && <Header />}
                 <main>{children}</main>
             </body>
         </html>
