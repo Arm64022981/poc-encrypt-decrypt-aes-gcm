@@ -1,0 +1,41 @@
+prod_build_image:
+  stage: build
+  image: mcr.microsoft.com/azure-cli:latest
+
+  script:
+    - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+    - az extension add --name containerapp --upgrade
+    - echo "Building and pushing Docker image to ACR with tag $IMAGE_TAG..."
+    - az acr build --registry "$ACR_NAME" --image "$WEB_NAME:$IMAGE_TAG" .
+  only:
+    - prod
+
+prod_deploy_to_azure:
+  stage: deploy
+  image: mcr.microsoft.com/azure-cli:latest
+  script:
+    - az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+    - az extension add --name containerapp --upgrade
+    - |
+          az containerapp update \
+            --name $WEB_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --image $IMAGE_NAME:$IMAGE_TAG \
+            --query properties.configuration.ingress.fqdn \
+            --min-replicas 1 \
+            --max-replicas 2 \
+            --scale-rule-name azure-http-rule \
+            --scale-rule-type http \
+            --scale-rule-http-concurrency 100 \
+            --set-env-vars "BUILD_ID=$BUILD_ID" \
+              "IP=$IP" \
+              "FRONT_VERSION=$FRONT_VERSION" \
+              "DATABASE_TYPE=$DATABASE_TYPE" \
+              "DATABASE_USERNAME=$DATABASE_USERNAME" \
+              "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
+              "DATABASE_HOST=$DATABASE_HOST" \
+              "DATABASE_PORT=$DATABASE_PORT" \
+              "DATABASE_NAME=$DATABASE_NAME" 
+
+  only:
+    - prod 

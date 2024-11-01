@@ -1,0 +1,106 @@
+/* General Styles */
+/* .* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+} */
+.background {
+  background-color: skyblue; /* เปลี่ยนเส้นทางให้ถูกต้อง */
+}
+
+.container1 {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #000000;
+}
+.container {
+  max-width: 1000px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 20px;
+  justify-content: center;
+}
+
+/* Section Styles */
+.section {
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f3f4f6;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #020202;
+  margin-bottom: 20px;
+}
+
+/* Input and Button Styles */
+.label {
+  font-size: 0.9rem;
+  color: #000000;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.input, .textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cbd5e0;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #edf2f7;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #000000;
+  outline: none;
+  background-color: #fff;
+}
+
+.button {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #667eea;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ca40a8;
+}
+
+.textarea {
+  height: 100px;
+  overflow-y: auto;
+}
+
+.buttonWithBorder {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 5px;
+  background-color: #667eea;
+  color: #ffffff;
+}
+
+.buttonWithBorder:hover {
+  background-color: #ca40a8;
+}
