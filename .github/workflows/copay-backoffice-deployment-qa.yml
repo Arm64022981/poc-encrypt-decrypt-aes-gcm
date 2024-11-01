@@ -1,0 +1,79 @@
+
+name: Build and Deploy copay-backoffice
+
+on:
+  push:
+    branches:
+      - qa # Adjust the branch as needed
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      RESOURCE_GROUP: "imake-resource"
+      LOCATION: "southeastasia"
+      ENVIRONMENT: "imake-env"
+      WEB_NAME: "copay-backoffice"
+      ACR_NAME: "acrimakeimakedev"
+      
+      #AZURE_TENANT_ID: "bef949f8-692d-43fc-8df3-81d9fc8780c4"
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+
+      BUILD_ID: "${CI_PIPELINE_ID}-${CI_COMMIT_SHORT_SHA}"
+
+      IMAGE_NAME: "$ACR_NAME.azurecr.io/$WEB_NAME"
+      IMAGE_TAG: "v1.0.0"
+
+      IP: "localhost"
+      FRONT_VERSION: "1.0"
+      DATABASE_TYPE: "postgres"
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD_QA }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST_QA }}
+      DATABASE_PORT: "15432"
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME_QA }}
+     
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      #- name: Set up Azure CLI
+      #  uses: azure/CLI@v1
+
+      - name: Login to Azure
+        #uses: azure/login@v1
+        #with:
+        #  creds: ${{ secrets.AZURE_CREDENTIALS }}
+        run: az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+
+      - name: Install Azure Container Apps extension
+        run: az extension add --name containerapp --upgrade
+
+      - name: Build and Push Image to ACR
+
+        run: az acr build --registry "$ACR_NAME" --image "$WEB_NAME:$IMAGE_TAG" .
+             
+      - name: Update Azure Container App
+        run: |
+          az containerapp update \
+            --name $WEB_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --image $IMAGE_NAME:$IMAGE_TAG \
+            --query properties.configuration.ingress.fqdn \
+            --min-replicas 1 \
+            --max-replicas 2 \
+            --scale-rule-name azure-http-rule \
+            --scale-rule-type http \
+            --scale-rule-http-concurrency 100 \
+            --set-env-vars "BUILD_ID=$BUILD_ID" \
+              "IP=$IP" \
+              "FRONT_VERSION=$FRONT_VERSION" \
+              "DATABASE_TYPE=$DATABASE_TYPE" \
+              "DATABASE_USERNAME=$DATABASE_USERNAME" \
+              "DATABASE_PASSWORD=$DATABASE_PASSWORD" \
+              "DATABASE_HOST=$DATABASE_HOST" \
+              "DATABASE_PORT=$DATABASE_PORT" \
+              "DATABASE_NAME=$DATABASE_NAME" 
