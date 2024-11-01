@@ -1,0 +1,81 @@
+/* styles/header.module.css */
+.header {
+    position: sticky; /* หรือจะใช้ fixed ก็ได้ */
+    top: 0;
+    width: 100%;
+    z-index: 100; /* ทำให้ header อยู่เหนือองค์ประกอบอื่น */
+    background-color: white; /* พื้นหลังเป็นสีขาวเพื่อให้เห็นชัดเจน */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงาเล็กน้อย */
+    transition: background-color 0.3s ease; /* เพิ่ม transition เมื่อเปลี่ยนพื้นหลัง */
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px; /* Padding เพื่อความสวยงาม */
+
+}
+
+.logoSection {
+    display: flex;
+    align-items: center;
+}
+
+.nav {
+    display: flex;
+    gap: 10px; /* ช่องว่างระหว่างลิงก์เมนู */
+}
+
+.navLink {
+    height: auto;
+    color: #333; /* สีของลิงก์เมนู */
+    text-decoration: none; /* ไม่ให้มีเส้นใต้ */
+    font-size: 14px; /* ขนาดฟอนต์ */
+    font-weight: 500;
+    padding: 10px 20px; /* Padding รอบๆ */
+    transition: background-color 0.3s ease; /* เพิ่ม transition เมื่อ hover */
+}
+.navLink1 {
+    height: auto;
+    color: #333; /* สีของลิงก์เมนู */
+    text-decoration: none; /* ไม่ให้มีเส้นใต้ */
+    font-size: 14px; /* ขนาดฟอนต์ */
+    font-weight: 500;
+    padding: 10px 20px; /* Padding รอบๆ */
+}
+
+
+.navLink:hover {
+    border-bottom: 2px solid #24B24C; /* เปลี่ยนพื้นหลังเมื่อ hover */
+}
+
+.navLink.active {
+    border-bottom: 2px solid #24B24C; /* เส้นขอบด้านล่างสำหรับแท็บที่เลือก */
+    color: #24B24C; /* เปลี่ยนสีเมื่อเลือก */
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+}
+
+.userName {
+    margin-right: 10px; /* ช่องว่างระหว่างชื่อและปุ่ม logout */
+    font-size: 16px; /* ขนาดฟอนต์ */
+    color: #333; /* สีของชื่อผู้ใช้ */
+}
+
+.logoutButton {
+    background: none; /* ไม่ให้มีพื้นหลัง */
+    border: none; /* ไม่ให้มีขอบ */
+    cursor: pointer; /* แสดงว่าเป็นปุ่มที่สามารถคลิกได้ */
+}
+
+.logoutIcon {
+    width: 24px; /* ขนาดไอคอน logout */
+    height: 24px; /* ขนาดไอคอน logout */
+    color: #333; /* สีของไอคอน logout */
+}
+
+
