@@ -2,7 +2,7 @@ variables:
   RESOURCE_GROUP: "imake-resource"
   LOCATION: "southeastasia"
   ENVIRONMENT: "imake-env"
-  WEB_NAME: "copay-backoffice"
+  WEB_NAME: "poc-encrypt-decrypt"
   ACR_NAME: "acrimakeimakedev"
   
   AZURE_TENANT_ID: "bef949f8-692d-43fc-8df3-81d9fc8780c4"
