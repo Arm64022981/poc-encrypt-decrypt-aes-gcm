@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+ service-bcp-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      shm_size: 500m
+    image: bsrc-ste-front:${FRONT_VERSION}
+    container_name: bsrc-ste-front
+    restart: unless-stopped
+    env_file:
+      - .env
+    labels:
+      - traefik.enable=true   
+      - traefik.http.routers.bsrc-ste-front.rule=Host(`${IP}`)
+      - traefik.http.routers.bsrc-ste-front.entrypoints=web
+      - traefik.http.routers.bsrc-ste-front.tls=false
+      - traefik.http.routers.bsrc-ste-front.service=bsrc-ste-front-service
+      - traefik.http.services.bsrc-ste-front-service.loadbalancer.server.port=3000
+    ports:
+      - "8082:3000"
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true
+    name: reverse-proxy
