@@ -1,5 +1,5 @@
+// view
 "use client";
-
 import React, { useState } from 'react';
 import styles from '@/styles/encrypt-decrypt.module.css'; // นำเข้าไฟล์ CSS ที่สร้างขึ้น
 
