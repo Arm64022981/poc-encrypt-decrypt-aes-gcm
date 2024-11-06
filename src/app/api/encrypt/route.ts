@@ -1,7 +1,7 @@
 // model
 import { NextResponse } from 'next/server';
 import { EncryptDecryptRequest } from '@/dto/request/encrypt-decrypt';
-import encryptMessage from '@/service/encrypt-decrypt/enctypt'
+import encryptMessage from '@/service/encrypt-decrypt/encrypt'
 
 export async function POST(req: Request) {
   const requestBody = await req.json();
