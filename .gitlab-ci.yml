@@ -1,0 +1,10 @@
+include:
+ - local: '.gitlab-ci/common.yml'
+ - local: '.gitlab-ci/develop.yml'
+ - local: '.gitlab-ci/qa.yml'
+ - local: '.gitlab-ci/prod.yml'
+
+  
+stages:
+ - build
+ - deploy

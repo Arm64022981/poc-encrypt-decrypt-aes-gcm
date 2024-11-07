@@ -42,8 +42,7 @@
 //     console.log('Database connected');
 //   })
 //   .catch((error) => console.log('Database connection error:', error));
-import { DataSource } from 'typeorm';
-import { CopayUser, CopayPointDailyReport } from './entity'; // นำเข้าโมเดลที่ต้องการ
+import { DataSource } from 'typeorm'; // นำเข้าโมเดลที่ต้องการ
 import {
   DATABASE_USERNAME,
   DATABASE_PASSWORD,
@@ -64,7 +63,7 @@ export const AppDataSource = new DataSource({
   password: decodedPassword,
   database: DATABASE_NAME,
   synchronize: false, 
-  entities: [CopayUser ,CopayPointDailyReport],
+  entities: [],
   logging: true,
   extra: {
     ssl: false, // ถ้า PostgreSQL Server ต้องการ SSL ให้เปลี่ยนเป็น true

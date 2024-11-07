@@ -1,0 +1,19 @@
+; IP=localhost  
+; FRONT_VERSION=1.0
+; DATABASE_TYPE=mssql
+; DATABASE_USERNAME=issoadmin
+; รหัสผ่านดั้งเดิมใช้ไม่ได้ Fyod@B8#8bSs
+; DATABASE_PASSWORD=Fyod%40B8%238bSs
+; DATABASE_HOST=172.19.108.57
+; DATABASE_SCHEMA=COPAY_DB
+
+IP=localhost  
+FRONT_VERSION=1.0
+DATABASE_TYPE=postgres  
+DATABASE_USERNAME=bsrc_ste_admin  
+#รหัสผ่านดั้งเดิมใช้ไม่ได้ P@ssw0rd
+DATABASE_PASSWORD=P%40ssw0rd
+DATABASE_HOST=157.245.148.217
+DATABASE_PORT=15432  
+DATABASE_NAME=bsrc_ste_db  
+

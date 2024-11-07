@@ -23,7 +23,7 @@
         },
 
         {
-          "name": "[Bun] Launch CoPay BackOffice",
+          "name": "[Bun] Launch poc-encrypt-decrypt",
           "type": "node",
           "request": "launch",
           "program": "${workspaceFolder}/node_modules/.bin/next",
@@ -40,7 +40,7 @@
         "skipFiles": ["<node_internals>/**"]
         },
         {
-          "name": "[Node] Launch CoPay BackOffice",
+          "name": "[Node] poc-encrypt-decrypt",
           "type": "node",
           "request": "launch",
           "program": "${workspaceFolder}/node_modules/next/dist/bin/next",

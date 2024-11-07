@@ -4,7 +4,7 @@ name: Build and Deploy copay-backoffice
 on:
   push:
     branches:
-      - prod # Adjust the branch as needed
+      - qa_temp # Adjust the branch as needed
 
 jobs:
   build-and-deploy:
@@ -13,12 +13,13 @@ jobs:
       RESOURCE_GROUP: "imake-resource"
       LOCATION: "southeastasia"
       ENVIRONMENT: "imake-env"
-      WEB_NAME: "copay-backoffice"
+      WEB_NAME: "copay-backoffice-qa"
       ACR_NAME: "acrimakeimakedev"
       
-      AZURE_TENANT_ID: "bef949f8-692d-43fc-8df3-81d9fc8780c4"
-      AZURE_CLIENT_ID: "$AZURE_CLIENT_ID_VALUE" 
-      AZURE_CLIENT_SECRET: "$AZURE_CLIENT_SECRET_VALUE"
+      #AZURE_TENANT_ID: "bef949f8-692d-43fc-8df3-81d9fc8780c4"
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
 
       BUILD_ID: "${CI_PIPELINE_ID}-${CI_COMMIT_SHORT_SHA}"
 
@@ -29,10 +30,10 @@ jobs:
       FRONT_VERSION: "1.0"
       DATABASE_TYPE: "postgres"
       DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD_PROD }}
-      DATABASE_HOST: ${{ secrets.DATABASE_HOST_PROD }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD_QA }}
+      DATABASE_HOST: ${{ secrets.DATABASE_HOST_QA }}
       DATABASE_PORT: "15432"
-      DATABASE_NAME: ${{ secrets.DATABASE_NAME_PROD }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME_QA }}
      
 
     steps:

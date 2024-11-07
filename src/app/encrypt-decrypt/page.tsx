@@ -1,47 +1,56 @@
 "use client";
-
 import React, { useState } from 'react';
-import styles from '@/styles/encrypt-decrypt.module.css'; // นำเข้าไฟล์ CSS ที่สร้างขึ้น
+import styles from '@/styles/encrypt-decrypt.module.css'; 
 
-const EncryptDecrypt: React.FC = () => {
-  const [encryptMsg, setEncryptMsg] = useState('');
-  const [encryptKey, setEncryptKey] = useState('');
-  const [cipherText, setCipherText] = useState('');
-  const [decryptCipherText, setDecryptCipherText] = useState('');
-  const [decryptKey, setDecryptKey] = useState('');
-  const [plainText, setPlainText] = useState('');
+export default function TextSecret() {
+  const [plaintext, setPlainText] = useState('');
+  const [AES_KEY, setAES_KEY] = useState('');
+  const [ciphertext, setCiphertext] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  // ฟังก์ชันสร้างคีย์แบบสุ่ม
-  const generateRandomKey = (length: number): string => {
+  // Function to generate a random AES_KEY
+  const generateRandomAES_KEY = (length: number): string => {
     const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let key = '';
+    let AES_KEY = '';
     for (let i = 0; i < length; i++) {
-      key += charset.charAt(Math.floor(Math.random() * charset.length));
+      AES_KEY += charset.charAt(Math.floor(Math.random() * charset.length));
     }
-    return key;
+    return AES_KEY;
   };
 
   const encryptMessage = async () => {
-    if (!encryptMsg || !encryptKey) {
-      alert("กรุณาใส่ข้อความและคีย์ในการเข้ารหัส");
-      return;
-    }
+    try {
+      const response = await fetch('/api/encrypt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({plaintext, AES_KEY }),
+      });
+      const data = await response.json();
 
-    const encodedMsg = btoa(encryptMsg); // เข้ารหัสข้อความด้วย Base64
-    setCipherText(encodedMsg); // แสดง ciphertext
+      if (!response.ok) throw new Error(data.error || 'Encryption failed');
+      
+      setCiphertext(data.plaintext);
+    } catch (error) {
+      console.error("Error",error);
+    }
   };
 
   const decryptMessage = async () => {
-    if (!decryptCipherText || !decryptKey) {
-      alert("กรุณาใส่ ciphertext และคีย์ในการถอดรหัส");
-      return;
-    }
-
+    setError('');
     try {
-      const decodedMsg = atob(decryptCipherText); // ถอดรหัสข้อความจาก Base64
-      setPlainText(decodedMsg); // แสดง plaintext
+      const response = await fetch('/api/decrypt', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plaintext:ciphertext, AES_KEY:AES_KEY }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error || 'Decryption failed');
+      
+      setMessage(data.plaintext);
     } catch (error) {
-      alert("การถอดรหัสล้มเหลว: ข้อความ ciphertext อาจไม่ถูกต้อง");
+      console.error("Error",error);
     }
   };
 
@@ -55,25 +64,27 @@ const EncryptDecrypt: React.FC = () => {
             <input
               type="text"
               className={styles.input}
-              value={encryptMsg}
-              onChange={e => setEncryptMsg(e.target.value)}
+              value={plaintext}
+              onChange={e => setPlainText(e.target.value)}
             />
 
-            <label className={styles.label}>Key:</label>
+            <label className={styles.label}>AES_KEY:</label>
             <input
               type="text"
               className={styles.input}
-              value={encryptKey}
-              onChange={e => setEncryptKey(e.target.value)}
+              value={AES_KEY}
+              onChange={e => setAES_KEY(e.target.value)}
             />
-            <button className={styles.buttonWithBorder} onClick={() => setEncryptKey(generateRandomKey(16))}>
-              Generate Random Key
+            <button className={styles.buttonWithBorder} onClick={() => setAES_KEY(generateRandomAES_KEY(16))}>
+              Generate Random AES_KEY
             </button>
 
             <button className={styles.button} onClick={encryptMessage}>Encrypt</button>
 
             <label className={styles.label}>Ciphertext (Base64):</label>
-            <textarea className={styles.textarea} value={cipherText} readOnly />
+            <textarea className={styles.textarea} 
+            value={ciphertext} 
+            readOnly />
           </div>
 
           <div className={styles.section}>
@@ -82,27 +93,28 @@ const EncryptDecrypt: React.FC = () => {
             <input
               type="text"
               className={styles.input}
-              value={decryptCipherText}
-              onChange={e => setDecryptCipherText(e.target.value)}
+              // value={ciphertext}
+              onChange={e => setCiphertext(e.target.value)}
             />
 
-            <label className={styles.label}>Key:</label>
+            <label className={styles.label}>AES_KEY:</label>
             <input
               type="text"
               className={styles.input}
-              value={decryptKey}
-              onChange={e => setDecryptKey(e.target.value)}
+              value={AES_KEY}
+              onChange={e => setAES_KEY(e.target.value)}
             />
 
             <button className={styles.button} onClick={decryptMessage}>Decrypt</button>
 
             <label className={styles.label}>Plain Text:</label>
-            <textarea className={styles.textarea} value={plainText} readOnly />
+            <textarea className={styles.textarea} 
+            value={message} 
+            readOnly />
           </div>
         </div>
       </div>
+      {error && <div className={styles.error}>{error}</div>}
     </div>
   );
-};
-
-export default EncryptDecrypt;
+}
