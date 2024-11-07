@@ -6,8 +6,6 @@ export default function TextSecret() {
   const [plaintext, setPlainText] = useState('');
   const [AES_KEY, setAES_KEY] = useState('');
   const [ciphertext, setCiphertext] = useState('');
-  const [nonce, setNonce] = useState('');
-  const [tag, setTag] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
@@ -33,10 +31,8 @@ export default function TextSecret() {
       if (!response.ok) throw new Error(data.error || 'Encryption failed');
       
       setCiphertext(data.plaintext);
-      setNonce(data.nonce);
-      setTag(data.tag);
-    } catch (err: any) {
-      setError(err.plaintext);
+    } catch (error) {
+      console.error("Error",error);
     }
   };
 
@@ -53,8 +49,8 @@ export default function TextSecret() {
       if (!response.ok) throw new Error(data.error || 'Decryption failed');
       
       setMessage(data.plaintext);
-    } catch (err: any) {
-      setError(err.plaintext);
+    } catch (error) {
+      console.error("Error",error);
     }
   };
 
