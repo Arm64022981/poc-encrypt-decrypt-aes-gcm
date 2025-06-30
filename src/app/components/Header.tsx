@@ -1,14 +1,14 @@
 // src/components/Header.tsx
-"use client"; // ทำให้เป็น Client Component
+"use client"; 
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // นำเข้า usePathname
+import { usePathname } from 'next/navigation'; 
 import styles from '../../styles/header.module.css';
 import Image from 'next/image';
 import ImageLogo from '@/public/images/Logo.png';
 const Header = () => {
-    const pathname = usePathname(); // ใช้ usePathname เพื่อเช็ค URL ปัจจุบัน
+    const pathname = usePathname(); 
 
     return (
         <header className="sticky top-0 w-full z-50 bg-white shadow-md transition duration-300 ease-in-out">
@@ -36,8 +36,12 @@ const Header = () => {
                 {/* User Section */}
                 <div className="flex items-center space-x-4">
                 <span className="text-gray-600 text-sm md:text-base lg:text-lg">admin</span>
-                    <button className={styles.logoutButton}>
-                     <i className="fa-solid fa-right-from-bracket" style={{ marginLeft: '5px', color: '#24B24C'}}></i>
+                    <button
+                        className={styles.logoutButton}
+                        aria-label="Logout"
+                        title="Logout"
+                    >
+                        <i className={`fa-solid fa-right-from-bracket ${styles.logoutIcon}`}></i>
                     </button>
                 </div>
             </div>
